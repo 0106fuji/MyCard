@@ -5,6 +5,11 @@
 :root{
     --card-aspect: 1.586; 
     --card-width: 30vw;
+
+    /* 反光層用 */
+    --shine-x: 50%;
+    --shine-y: 50%;
+    --glare-opacity: 0.3;
 }
 
 body{
@@ -29,18 +34,7 @@ body{
 
 }
 
-.card_image {
-    width: 100%;           
-    height: 100%;          
-    object-fit: cover;     
-    
-    z-index: 1;            
-    display: block;
 
-    border-radius: inherit; 
-    /* 跨層級穿透 */
-    pointer-events: none;
-}
 
 
 
@@ -81,8 +75,68 @@ body{
 .front{
     grid-area: 1 / 1;
     overflow: hidden;
+    display: grid;
+}
+
+.front img {
+    grid-area: 1 / 1;
+      display: block;
+      object-fit: cover;
+      user-select: none;
+      pointer-events: none;
 }
 
 /* 反光部分 */
-/* .shine 
-.glare */
+.shine{
+    
+    pointer-events: none;
+    /* 這邊用混和模式 */
+    mix-blend-mode:hard-light;
+
+    background-image:
+    radial-gradient(
+          farthest-corner circle at var(--shine-x) var(--shine-y),
+          rgba(255, 255, 255, 0.8) 10%,
+          rgba(255, 255, 255, 0.5) 20%,
+          rgba(255, 255, 255, 0)   60%
+        ),
+    repeating-linear-gradient(
+          135deg,
+          #ff0000 20%,
+          #ff7700 38%,
+          #ffff00 45%,
+          #00ff00 55%,
+          #0000ff 70%,
+          #8b00ff 80%,
+          #ff0000 90%   /* 回到紅色 → 就會無縫重複 */
+        ),
+     repeating-linear-gradient(
+          45deg,
+          rgba(0, 0, 0, 0)   0px,
+          rgba(0, 0, 0, 0)   2px,
+          rgba(0, 0, 0, 0.1) 2px,
+          rgba(0, 0, 0, 0.1) 4px
+        );
+    /* 背景用的混和模式 */
+    background-blend-mode: overlay, hard-light, normal;
+    background-size: 100% 100%, 200% 200%, 6px 6px;
+
+    opacity: 0.4;
+}
+.glare{
+    
+    pointer-events: none;
+
+    mix-blend-mode: hard-light;
+
+    background-image:
+        radial-gradient(
+          farthest-corner circle at var(--shine-x) var(--shine-y),
+          rgba(255, 255, 255, 0.5) 0%,
+          rgba(255, 255, 255, 0.1) 40%,
+          rgba(0,   0,   0,   0.2) 100%
+        );
+ 
+      /* opacity 讀取 CSS 變數 */
+      opacity: var(--glare-opacity);
+    }
