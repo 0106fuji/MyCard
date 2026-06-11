@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+}
+
+:root{
+    --card-aspect: 1.586; 
+    --card-width: 30vw;
+}
+
+body{
+    min-height: 100vh;
+    margin: 0;
+    background-color: rgb(84, 88, 99);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+.card{
+    width: var(--card-width);
+    aspect-ratio: var(--card-aspect);
+    border-radius: 12px;
+    /* 透視距離 */
+    perspective: 600px;
+
+}
+
+.card_image {
+    width: 100%;           
+    height: 100%;          
+    object-fit: cover;     
+    
+    z-index: 1;            
+    display: block;
+
+    border-radius: inherit; 
+    /* 跨層級穿透 */
+    pointer-events: none;
+}
+
+
+
+.rotator{
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+
+    width: 100%;           
+    height: 100%;
+
+    transform: rotateY(var(--tilt-y)) rotateX(var(--tilt-x));
+    transform-origin: center;
+
+    border-radius: inherit; 
+
+    /* 給瀏覽器做優化 */
+    will-change: transform;
+
+    /* 疊子元素用 */
+    display: grid;
+
+    box-shadow:
+        0 20px 40px rgba(0, 0, 0, 0.5),
+        0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.front,
+.front > * {
+    /* 疊子元素用 */
+    grid-area: 1 / 1;
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: inherit;
+    }
+
+.front{
+    grid-area: 1 / 1;
+    overflow: hidden;
+}
+
+/* 反光部分 */
+/* .shine 
+.glare */
