@@ -22,4 +22,79 @@
 
 
 </body>
+  <script>
+    
+    // ==========================================
+    const card    = document.querySelector(".card");
+    const rotator = document.querySelector(".rotator");
+    const shine   = document.querySelector(".shine");
+ 
+    // ==========================================
+    // pointermove：滑鼠在卡片上移動時觸發
+    
+    // ==========================================
+    card.addEventListener("pointermove", (e) => {
+ 
+      
+      const rect = card.getBoundingClientRect();
+ 
+      
+      //   e.clientX = 滑鼠距離視窗左邊的距離（px）
+      //   rect.left = 卡片左邊距離視窗左邊的距離（px）
+      //
+      //   e.clientX - rect.left = 滑鼠在卡片內部的 x 距離（px）
+      //   除以 rect.width = 轉成 0~1 的比例
+      //   乘以 100 = 轉成 0~100 的百分比
+      const x = ((e.clientX - rect.left) / rect.width)  * 100;
+      const y = ((e.clientY - rect.top)  / rect.height) * 100;
+ 
+      // ─計算傾斜角度 ──
+      //
+      //   x = 0   滑鼠在最左邊 → (0-50)/50  = -1 → tiltY = -15deg（向左傾）
+      //   x = 50  滑鼠在正中間 → (50-50)/50 =  0 → tiltY =   0deg（不傾）
+      //   x = 100 滑鼠在最右邊 → (100-50)/50 = 1 → tiltY =  15deg（向右傾）
+      //
+      //   tiltX（上下）要反向：滑鼠在上面時卡片往後仰（正值）
+      //   所以 y 要加負號
+      const tiltY =  (x - 50) / 50 * 15;  // 左右傾斜，最大 ±15 度
+      const tiltX = -(y - 50) / 50 * 15;  // 上下傾斜，最大 ±15 度（反向）
+ 
+      
+      //   setProperty("--變數名", "值")
+      //   直接修改元素的 CSS 變數
+      //   → CSS 的 transform / background-position 自動更新
+      rotator.style.setProperty("--tilt-y", `${tiltY}deg`);
+      rotator.style.setProperty("--tilt-x", `${tiltX}deg`);
+ 
+      // 光點位置直接用 x, y 百分比
+      rotator.style.setProperty("--shine-x", `${x}%`);
+      rotator.style.setProperty("--shine-y", `${y}%`);
+ 
+      // 光暈透明度：離中心越遠越明顯（最大 0.4）
+      // Math.hypot(a, b) = √(a² + b²)，算兩點距離
+      // 這裡算滑鼠離卡片中心的距離，轉成 0~1 的比例
+      const distFromCenter = Math.hypot(x - 50, y - 50) / 70;
+      rotator.style.setProperty("--glare-opacity", distFromCenter * 0.4);
+ 
+      // 滑鼠移入 → 加上 active class 讓反光顯示
+      shine.classList.add("shine--active");
+    });
+ 
+    // ==========================================
+    // pointerleave：滑鼠離開卡片時觸發
+    // 把所有變數重設回預設值，卡片回正
+    // ==========================================
+    card.addEventListener("pointerleave", () => {
+ 
+      // 傾斜歸零
+      rotator.style.setProperty("--tilt-y", "0deg");
+      rotator.style.setProperty("--tilt-x", "0deg");
+ 
+      // 光暈消失
+      rotator.style.setProperty("--glare-opacity", "0");
+ 
+      // 移除 active class → 反光淡出
+      shine.classList.remove("shine--active");
+    });
+  </script>
 </html>

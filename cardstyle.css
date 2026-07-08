@@ -96,9 +96,9 @@ body{
     background-image:
     radial-gradient(
           farthest-corner circle at var(--shine-x) var(--shine-y),
-          rgba(255, 255, 255, 0.8) 10%,
+          rgba(255, 255, 255, 0.8) 20%,
           rgba(255, 255, 255, 0.5) 20%,
-          rgba(255, 255, 255, 0)   60%
+          rgba(255, 255, 255, 0)   40%
         ),
     repeating-linear-gradient(
           135deg,
@@ -121,7 +121,7 @@ body{
     background-blend-mode: overlay, hard-light, normal;
     background-size: 100% 100%, 200% 200%, 6px 6px;
 
-    opacity: 0.4;
+    opacity: 0.2;
 }
 .glare{
     
@@ -132,11 +132,12 @@ body{
     background-image:
         radial-gradient(
           farthest-corner circle at var(--shine-x) var(--shine-y),
-          rgba(255, 255, 255, 0.5) 0%,
+          rgba(255, 255, 255, 0.5) 10%,
           rgba(255, 255, 255, 0.1) 40%,
           rgba(0,   0,   0,   0.2) 100%
         );
  
       /* opacity 讀取 CSS 變數 */
-      opacity: var(--glare-opacity);
+      /* opacity: var(--glare-opacity); */
+      opacity:0.8;
     }
